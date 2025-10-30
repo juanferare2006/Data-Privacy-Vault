@@ -1,0 +1,82 @@
+## Prompt inicial para anonimizar
+I am creating a Data Privacy Vault so that PII (Personally identifiable information) becomes
+anonymized using node.js.
+I need to start with the first step: have an endpoint so that it receivesa single string with a
+message that contains PII like names, emails and phone numbers and returns it anonymized
+replacing the whole name, email and phone with an alphanumeric token.
+Please act as an experienced node.js developer and tell me step by step how would you do
+it. Ask me for information whenever you need it and use good coding practices and
+comments in the functions.
+An example of the request can be:
+curl -X POST http://localhost:3001/anonymize -H "Content-Type: application/json" -d
+'{"message":"oferta de trabajo para Dago Borda con email dborda@gmail.com y teléfono
+3152319157"}'
+The response to that request would be:
+{
+"anonymizedMessage": "oferta de trabajo para d7e8e0bf bd673df2 con email b09bde30 y
+teléfono dd195b6c"
+}
+
+## Prompt para desanonimizar
+Thanks. Now, let's implement the deanonymize endpoint where the calling should be like this:
+curl -X POST http://localhost:3001/deanonymize -H "Content-Type: application/json" -d
+'{"anonymizedMessage":"oferta de trabajo para NAME_e1be92e2b3a5 con email EMAIL_8004719c6ea5 y
+telefono PHONE_40e83067b9cb"}'
+and should return the original message:
+{"message":"oferta de trabajo para Dago Borda con email dborda@gmail.com y teléfono 3152319157"}
+
+## Prompt para conexión con MongoDB
+
+```
+Agrega persistencia usando MongoDB Atlas para guardar los pares [dato real, token].
+Conéctate a la base de datos usando esta URL de conexión que me da Atlas: "mongodb+srv://admin:<clave>@cluster0.xnythwl.mongodb.net/?appName=Cluster0".
+Reemplaza lo necesario para que funcione con Mongoose.
+```
+## Prompt para conexión con OpenAI
+
+```
+Crea una clase en Node.js que se conecte a OpenAI utilizando mi clave API:
+sk-proj-XXXXXXXXXXXXXXXXXXXX
+
+La clase debe tener un método llamado completeText(prompt) que use el modelo gpt-4o para enviar un mensaje y devolver la respuesta de ChatGPT. Usa buenas prácticas y axios.
+```
+
+
+## Prompt para crear el endpoint seguro
+
+```
+Crea un endpoint POST llamado /secureChatGPT.
+
+Este endpoint debe:
+1. Recibir un JSON con un campo prompt (el mensaje del usuario).
+2. Anonimizar ese prompt usando la lógica actual.
+3. Usar la clase OpenAIClient para enviar el prompt anonimizado a ChatGPT.
+4. Obtener la respuesta de ChatGPT.
+5. Desanonimizar la respuesta.
+6. Devolver al cliente un JSON con el campo response.
+```
+#Prompt para refinar el software
+El objetivo de este software es anonimizar la información, almacenarla en Mongo BD y enviarla a ChatGPT para que nos de la respuesta, y luego sobre la respuesta de ChatGPT desanonimizarla y mostrar la respuesta con la informacion original. En este momento la respuesta se está mostrando con los campos genericos que muestra ChatGPT. Ajusta el código para cumplir el requerimiento.
+
+#generación del README
+Genera un archivo Readme.md con la descripción del
+proyecto y los pasos para instalarlo
+
+
+#Resultado de pruebas
+
+##Prueba anonimización
+Petición
+curl -X POST http://localhost:3001/anonymize -H "Content-Type: application/json" -d '{"message":"Contact John Smith at john.smith@company.com or call 555-123-4567"}'
+Respuesta
+{"anonymizedMessage":"js3tacxx at xpwt7om8 or call 555-123-4567"}::1 - - [29/Oct/2025:01:14:26 +0000] "POST /anonymize HTTP/1.1" 200 65 "-" "curl/8.7.1"  
+
+##Prueba desanonimización
+Petición
+curl -X POST http://localhost:3001/deanonymize -H "Content-Type: application/json" -d '{"anonymizedMessage":"oferta de trabajo para NAME_23o23sfr con email EMAIL_isbzc9g9 y teléfono PHONE_kgal9kst"}'
+Respuesta
+{"message":"oferta de trabajo para Dago Borda con email dborda@gmail.com y teléfono 3152319157"}::1 - - [29/Oct/2025:01:18:20 +0000] "POST /deanonymize HTTP/1.1" 200 97 "-" "curl/8.7.1" 
+
+#Conclusión y reflexión
+Este taller representó una oportunidad formativa para acercarnos de manera práctica al desarrollo de soluciones funcionales basadas en inteligencia artificial generativa. Como equipo interdisciplinario, compuesto por profesionales con perfiles en ingeniería, derecho y gerencia de TI, logramos completar satisfactoriamente los tres componentes esenciales del ejercicio: la anonimización de datos personales, la persistencia en MongoDB y la comunicación segura con la API de OpenAI.
+El aprendizaje más significativos fue evidenciar cómo el uso estratégico de asistentes de IA para programación (Cursor) no sólo optimiza los tiempos de desarrollo, sino que facilita una curva de aprendizaje mucho más accesible para perfiles no técnicos. Esto confirma que, bajo una guía clara y objetivos bien definidos, equipos diversos pueden construir soluciones en corto tiempo.
